@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Catalogo Crimi Gang: felpe, t-shirt e accessori in una pagina separata dedicata agli articoli."
+    />
+    <title>Crimi Gang | Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Manrope:wght@400;500;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Torna alla home di Crimi Gang">
+          <span class="brand-mark">CG</span>
+          <span class="brand-copy">
+            <strong>Crimi Gang</strong>
+            <small>Ridewear Shop</small>
+          </span>
+        </a>
+
+        <nav class="nav">
+          <a href="shop.html" aria-current="page">Shop</a>
+          <a href="index.html#about">Chi siamo</a>
+          <a href="index.html#drop">Drop</a>
+          <a href="index.html#social">Social</a>
+        </nav>
+
+        <a class="button button-ghost" href="index.html">Torna alla home</a>
+      </header>
+
+      <main>
+        <section class="subhero">
+          <div class="subhero-copy">
+            <p class="eyebrow">Catalogo articoli</p>
+            <h1>Lo shop ora ha la sua pagina separata.</h1>
+            <p class="hero-text">
+              Qui puoi mostrare gli articoli in modo piu chiaro, con spazio per
+              foto, descrizioni, prezzi e futuri pulsanti acquisto.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#catalogo">Vai agli articoli</a>
+              <a class="button button-secondary" href="index.html#drop">Segui il drop</a>
+            </div>
+          </div>
+
+          <div class="subhero-panel">
+            <p class="eyebrow">Focus</p>
+            <h2>Felpe, tee e accessori</h2>
+            <p>
+              Ho preparato una struttura catalogo gia pronta per diventare shop
+              vero appena aggiungiamo prodotti reali, prezzi e foto ufficiali.
+            </p>
+          </div>
+        </section>
+
+        <section class="section catalog-section" id="catalogo">
+          <div class="section-heading">
+            <p class="eyebrow">Crimi Gang Articles</p>
+            <h2>Una pagina dedicata agli articoli, separata dalla home.</h2>
+            <p>
+              Ogni card ha il suo spazio per descrizione, stato del drop e
+              dettagli prodotto. Quando vuoi, qui possiamo aggiungere taglie,
+              varianti e pulsanti checkout.
+            </p>
+          </div>
+
+          <div class="catalog-grid">
+            <article class="catalog-card" id="hoodie">
+              <div class="product-media media-hoodie">
+                <span>Felpa</span>
+              </div>
+              <div class="catalog-body">
+                <div class="catalog-top">
+                  <div>
+                    <p class="eyebrow">Signature item</p>
+                    <h3>Crimi Gang Oversize Hoodie</h3>
+                  </div>
+                  <span class="price-pill">Soon</span>
+                </div>
+                <p>
+                  Felpa principale del primo drop, con taglio street e spazio
+                  ideale per logo frontale o grafica posteriore piu aggressiva.
+                </p>
+                <ul class="detail-list">
+                  <li>Vestibilita oversize</li>
+                  <li>Perfetta per visual green + sky blue</li>
+                  <li>Ideale come prodotto hero del brand</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="catalog-card" id="tee">
+              <div class="product-media media-tee">
+                <span>T-Shirt</span>
+              </div>
+              <div class="catalog-body">
+                <div class="catalog-top">
+                  <div>
+                    <p class="eyebrow">Daily fit</p>
+                    <h3>Tee Ride Everyday</h3>
+                  </div>
+                  <span class="price-pill">Preview</span>
+                </div>
+                <p>
+                  T-shirt pensata per il pubblico social e per l&apos;estate, con
+                  possibilita di stampa piu pulita davanti e grafiche forti sul
+                  retro.
+                </p>
+                <ul class="detail-list">
+                  <li>Look pulito e immediato</li>
+                  <li>Ottima per capsule collection</li>
+                  <li>Facile da lanciare in reel e TikTok</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="catalog-card" id="accessori">
+              <div class="product-media media-accessories">
+                <span>Accessori</span>
+              </div>
+              <div class="catalog-body">
+                <div class="catalog-top">
+                  <div>
+                    <p class="eyebrow">Extra gear</p>
+                    <h3>Sticker, patch e accessori</h3>
+                  </div>
+                  <span class="price-pill">Custom</span>
+                </div>
+                <p>
+                  Sezione flessibile per gadget, pack community, adesivi casco,
+                  patch, portachiavi e piccoli prodotti facili da vendere nei
+                  primi drop.
+                </p>
+                <ul class="detail-list">
+                  <li>Ottimi per bundle</li>
+                  <li>Perfetti per edizioni limitate</li>
+                  <li>Utili per aumentare il valore medio del carrello</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Crimi Gang</p>
+        <span>Shop separato dagli altri contenuti del brand.</span>
+        <small>&copy; <span id="year"></span> Crimi Gang. All rights reserved.</small>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
