@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Crimi Gang: streetwear e merch ispirato al mondo moto, tra reel, adrenalina e nuove drop."
+      content="Crimi Gang: shop streetwear ispirato al mondo moto, con felpe, magliette, accessori e carrello."
     />
     <title>Crimi Gang | Ridewear Shop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-page="home">
     <div class="site-shell">
       <header class="topbar">
         <a class="brand" href="#home" aria-label="Vai alla home di Crimi Gang">
@@ -31,7 +31,11 @@
           <a href="shop.html">Shop</a>
           <a href="#about">Chi siamo</a>
           <a href="#drop">Drop</a>
-          <a href="#social">Social</a>
+          <a href="social.html">Social</a>
+          <a class="cart-link" href="cart.html">
+            Carrello
+            <span class="cart-count" data-cart-count>0</span>
+          </a>
         </nav>
 
         <a class="button button-ghost" href="shop.html">Scopri la collezione</a>
@@ -46,28 +50,28 @@
               <span>tra curve, casco e contenuti.</span>
             </h1>
             <p class="hero-text">
-              Crimi Gang e il merch di due ragazzi che vivono moto, video e
-              adrenalina tra Instagram e TikTok. Per ora il drop e in arrivo:
-              il sito e gia pronto a trasformarsi in shop.
+              Crimi Gang unisce contenuti in moto, community e merch: ora la
+              home e una vetrina piu shop, con collegamenti a prodotto, social e
+              carrello.
             </p>
 
             <div class="hero-actions">
               <a class="button button-primary" href="#drop">Entra nel prossimo drop</a>
-              <a class="button button-secondary" href="#social">Seguici sui social</a>
+              <a class="button button-secondary" href="social.html">Seguici sui social</a>
             </div>
 
             <ul class="hero-stats" aria-label="Dati del brand">
               <li>
                 <strong>01</strong>
-                <span>Brand nato per la community moto</span>
+                <span>Brand costruito sulla community moto</span>
               </li>
               <li>
                 <strong>02</strong>
-                <span>Merch pronto per felpe, tee e accessori</span>
+                <span>Catalogo con felpe, magliette, pantaloni e accessori</span>
               </li>
               <li>
                 <strong>03</strong>
-                <span>Layout ottimizzato per pubblico social mobile</span>
+                <span>Carrello pronto per aggiunte e riepilogo prodotti</span>
               </li>
             </ul>
           </div>
@@ -97,82 +101,92 @@
             <span>Drop Limited</span>
             <span>Ride Culture</span>
             <span>Instagram &amp; TikTok</span>
+            <span>Carrello Attivo</span>
             <span>Crimi Gang Shop</span>
             <span>Felpe Oversize</span>
-            <span>Drop Limited</span>
           </div>
         </section>
 
         <section class="section products" id="shop">
           <div class="section-heading">
-            <p class="eyebrow">Shop layout</p>
-            <h2>La home e gia pronta per vendere il primo drop.</h2>
+            <p class="eyebrow">Featured products</p>
+            <h2>Tre pezzi hero per capire subito il mood del brand.</h2>
             <p>
-              Queste card sono placeholder premium: quando mi mandi logo, foto e
-              prodotti veri, le trasformiamo nello shop completo.
+              Le card della home restano piu editoriali, ma ora puntano a
+              pagine prodotto vere con prezzo, varianti e aggiunta al carrello.
             </p>
           </div>
 
           <div class="product-grid">
             <article class="product-card featured">
-              <div class="product-media media-hoodie">
-                <span>Felpa</span>
-              </div>
+              <a class="media-link" href="product.html?id=storm-logo-hoodie" aria-label="Apri Storm Logo Hoodie">
+                <div class="product-media media-hoodie media-hoodie-storm">
+                  <span>Felpa hero</span>
+                </div>
+              </a>
               <div class="product-body">
                 <div class="product-meta">
                   <p>Signature Drop</p>
-                  <span>Best launch item</span>
+                  <span>La felpa principale del primo lancio</span>
                 </div>
-                <h3>Crimi Gang Oversize Hoodie</h3>
+                <h3>Storm Logo Hoodie</h3>
                 <p>
-                  Felpa protagonista del brand: taglio street, stampa forte e
-                  spazio perfetto per il logo ufficiale.
+                  Oversize, cattiva il giusto e perfetta per far entrare il logo
+                  Crimi Gang in modo forte ma pulito.
                 </p>
                 <div class="product-footer">
-                  <strong>In arrivo</strong>
-                  <a href="shop.html#felpe">Vedi articoli</a>
+                  <strong>25€</strong>
+                  <a href="product.html?id=storm-logo-hoodie">Apri prodotto</a>
                 </div>
               </div>
             </article>
 
             <article class="product-card">
-              <div class="product-media media-tee">
-                <span>T-Shirt</span>
-              </div>
+              <a class="media-link" href="product.html?id=core-logo-tee" aria-label="Apri Core Logo Tee">
+                <div class="product-media media-tee media-tee-core">
+                  <span>T-Shirt</span>
+                </div>
+              </a>
               <div class="product-body">
                 <div class="product-meta">
                   <p>Street basic</p>
-                  <span>Daily fit</span>
+                  <span>La tee piu semplice e piu vendibile</span>
                 </div>
-                <h3>Tee Ride Everyday</h3>
+                <h3>Core Logo Tee</h3>
                 <p>
-                  T-shirt pulita davanti, piu cattiva sul retro. Ideale per
-                  contenuti estivi e uscite in gruppo.
+                  Una maglietta pulita, veloce da capire e perfetta per chi
+                  vuole entrare nel brand con il pezzo piu facile da indossare.
                 </p>
                 <div class="product-footer">
-                  <strong>Preview</strong>
-                  <a href="shop.html#magliette">Vedi articoli</a>
+                  <strong>15€</strong>
+                  <a href="product.html?id=core-logo-tee">Apri prodotto</a>
                 </div>
               </div>
             </article>
 
             <article class="product-card">
-              <div class="product-media media-accessories">
-                <span>Accessori</span>
-              </div>
+              <a
+                class="media-link"
+                href="product.html?id=helmet-sticker-pack"
+                aria-label="Apri Helmet Sticker Pack"
+              >
+                <div class="product-media media-accessories media-accessories-sticker">
+                  <span>Sticker</span>
+                </div>
+              </a>
               <div class="product-body">
                 <div class="product-meta">
-                  <p>Extra gear</p>
-                  <span>Small but loud</span>
+                  <p>Quick win</p>
+                  <span>Sticker, patch e portachiavi per i primi bundle</span>
                 </div>
-                <h3>Sticker, patch e accessori</h3>
+                <h3>Helmet Sticker Pack</h3>
                 <p>
-                  Una sezione flessibile per aggiungere piccoli prodotti,
-                  bundle, gadget e pezzi da community drop.
+                  Il prodotto piu immediato del catalogo: piccolo, facile da
+                  vendere e perfetto per far girare il nome del brand.
                 </p>
                 <div class="product-footer">
-                  <strong>Custom slot</strong>
-                  <a href="shop.html#accessori">Vedi articoli</a>
+                  <strong>5€</strong>
+                  <a href="product.html?id=helmet-sticker-pack">Apri prodotto</a>
                 </div>
               </div>
             </article>
@@ -202,21 +216,21 @@
               <strong>Cristian</strong>
               <p>
                 Energia, motori e una presenza diretta che funziona bene nei
-                lanci prodotto.
+                lanci prodotto e nella parte piu street del brand.
               </p>
             </div>
             <div class="story-card">
               <strong>Noemi</strong>
               <p>
-                Stile, personalita e contenuti che danno al brand un taglio piu
-                riconoscibile e social.
+                Stile, personalita e contenuti che danno al progetto un taglio
+                piu riconoscibile, piu social e piu forte visivamente.
               </p>
             </div>
             <div class="story-card accent">
               <strong>Crimi Gang</strong>
               <p>
-                Un nome che si presta bene a capsule collection, limited drop e
-                collaborazioni future.
+                Un nome che regge bene capsule, drop limitati, accessori e una
+                crescita futura piu seria lato shop.
               </p>
             </div>
           </div>
@@ -226,11 +240,11 @@
           <div class="drop-card">
             <div>
               <p class="eyebrow">Next drop</p>
-              <h2>Una struttura gia pronta per prenotazioni e hype.</h2>
+              <h2>Una struttura pronta per hype, prodotti e conversione.</h2>
               <p>
                 Ho lasciato una sezione perfetta per countdown, newsletter,
                 prenotazioni o lista prioritaria appena decidete la prima
-                collezione.
+                collezione ufficiale.
               </p>
             </div>
 
@@ -250,14 +264,14 @@
           </div>
         </section>
 
-        <section class="section social-section" id="social">
+        <section class="section social-section" id="social-preview">
           <div class="section-heading">
             <p class="eyebrow">Community first</p>
-            <h2>Il traffico principale arrivera da Instagram e TikTok.</h2>
+            <h2>La parte social ora vive in una pagina dedicata.</h2>
             <p>
-              Per questo la parte finale spinge sulla community: contenuti,
-              call to action e spazio per inserire gli handle ufficiali appena
-              vuoi.
+              Instagram e TikTok hanno adesso il loro spazio separato, cosi lo
+              shop resta piu pulito e i contenuti creator hanno una direzione
+              tutta loro.
             </p>
           </div>
 
@@ -265,20 +279,23 @@
             <article class="social-card">
               <p>Instagram</p>
               <h3>@crimigang</h3>
-              <span>Placeholder handle da aggiornare</span>
+              <span>Outfit, teaser drop, foto e community moments.</span>
             </article>
             <article class="social-card">
               <p>TikTok</p>
               <h3>@crimigang</h3>
-              <span>Perfetto per teaser, drop e video in moto</span>
+              <span>POV, clip in moto, contenuti veloci e lancio prodotti.</span>
             </article>
             <article class="social-card wide">
-              <p>Visione</p>
-              <h3>Merch per una community che vive la strada e la camera.</h3>
+              <p>Pagina separata</p>
+              <h3>Apri la sezione social e tieni shop e contenuti piu ordinati.</h3>
               <span>
-                Quando mi mandi il logo, posso chiudere il branding e rifinire
-                header, favicon, packaging visivo e card prodotto.
+                Da qui possiamo portare la community su una pagina dedicata con
+                handle, video e collegamenti veri.
               </span>
+              <a class="button button-primary social-inline-button" href="social.html">
+                Apri la pagina social
+              </a>
             </article>
           </div>
         </section>
@@ -286,11 +303,12 @@
 
       <footer class="footer">
         <p>Crimi Gang</p>
-        <span>Frontend shop concept per Cristian e Noemi.</span>
+        <span>Home aggiornata per collegare shop, social, prodotti e carrello.</span>
         <small>&copy; <span id="year"></span> Crimi Gang. All rights reserved.</small>
       </footer>
     </div>
 
+    <script src="products.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
