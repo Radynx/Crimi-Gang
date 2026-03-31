@@ -12,6 +12,80 @@ function labelize(value) {
     .replace(/\b\w/g, (match) => match.toUpperCase());
 }
 
+function colorSwatchValue(name) {
+  const value = String(name || "").toLowerCase();
+
+  if (value.includes("verde")) {
+    return "linear-gradient(135deg, #69ff9b, #18b86d)";
+  }
+
+  if (value.includes("azzurro") || value.includes("sky")) {
+    return "linear-gradient(135deg, #59d7ff, #1296be)";
+  }
+
+  if (value.includes("nero")) {
+    return "linear-gradient(135deg, #071217, #29343a)";
+  }
+
+  if (value.includes("bianco")) {
+    return "linear-gradient(135deg, #f6fffe, #bbd7d3)";
+  }
+
+  if (value.includes("grigio") || value.includes("fumo")) {
+    return "linear-gradient(135deg, #758891, #c3d2cf)";
+  }
+
+  if (value.includes("mixed")) {
+    return "linear-gradient(135deg, #69ff9b 0%, #59d7ff 52%, #f6fffe 100%)";
+  }
+
+  if (value.includes("petrolio")) {
+    return "linear-gradient(135deg, #26a087, #0c3c47)";
+  }
+
+  return "linear-gradient(135deg, #69ff9b, #59d7ff)";
+}
+
+function renderProductGraphic(modifier = "") {
+  return `
+    <div class="product-graphic${modifier ? ` ${modifier}` : ""}" aria-hidden="true">
+      <img src="assets/logo-crimi.jpg" alt="" loading="lazy" decoding="async" />
+    </div>
+  `;
+}
+
+function renderColorOption(color, index) {
+  return `
+    <button
+      class="option-chip option-chip-color${index === 0 ? " is-active" : ""}"
+      type="button"
+      data-option-group="color"
+      data-option-value="${color}"
+      style="--swatch: ${colorSwatchValue(color)}"
+    >
+      <span class="swatch-dot"></span>
+      <span class="option-label">${color}</span>
+    </button>
+  `;
+}
+
+function renderSizeOption(size, index) {
+  const badge = size === "One Size" ? "U" : size;
+  const label = size === "One Size" ? "Taglia unica" : `Taglia ${size}`;
+
+  return `
+    <button
+      class="option-chip option-chip-size${index === 0 ? " is-active" : ""}"
+      type="button"
+      data-option-group="size"
+      data-option-value="${size}"
+    >
+      <span class="option-size-badge">${badge}</span>
+      <span class="option-label">${label}</span>
+    </button>
+  `;
+}
+
 function productUrl(id) {
   return `product.html?id=${encodeURIComponent(id)}`;
 }
@@ -93,6 +167,7 @@ function renderShopCard(product) {
     <article class="mini-card">
       <a class="media-link" href="${productUrl(product.id)}" aria-label="Apri ${product.name}">
         <div class="product-media ${product.mediaClass}">
+          ${renderProductGraphic()}
           <span>${product.cardLabel}</span>
         </div>
       </a>
@@ -236,33 +311,11 @@ function renderProductPage() {
   document.title = `${product.name} | Crimi Gang`;
 
   const colorOptions = product.colors
-    .map(
-      (color, index) => `
-        <button
-          class="option-chip${index === 0 ? " is-active" : ""}"
-          type="button"
-          data-option-group="color"
-          data-option-value="${color}"
-        >
-          ${color}
-        </button>
-      `,
-    )
+    .map((color, index) => renderColorOption(color, index))
     .join("");
 
   const sizeOptions = product.sizes
-    .map(
-      (size, index) => `
-        <button
-          class="option-chip${index === 0 ? " is-active" : ""}"
-          type="button"
-          data-option-group="size"
-          data-option-value="${size}"
-        >
-          ${size}
-        </button>
-      `,
-    )
+    .map((size, index) => renderSizeOption(size, index))
     .join("");
 
   const tags = product.tags.map((tag) => `<span>${tag}</span>`).join("");
@@ -272,6 +325,7 @@ function renderProductPage() {
       <div class="detail-layout">
         <div class="detail-media-shell">
           <div class="detail-media ${product.mediaClass}">
+            ${renderProductGraphic("product-graphic-detail")}
             <span>${product.cardLabel}</span>
           </div>
         </div>
@@ -296,14 +350,23 @@ function renderProductPage() {
 
           <div class="selector-block">
             <label for="quantity">Quantita</label>
-            <input
-              class="quantity-input"
-              id="quantity"
-              type="number"
-              min="1"
-              value="1"
-              data-quantity-input
-            />
+            <div class="quantity-stepper">
+              <button type="button" data-quantity-action="decrease" aria-label="Diminuisci quantita">
+                -
+              </button>
+              <input
+                class="quantity-input"
+                id="quantity"
+                type="text"
+                inputmode="numeric"
+                value="1"
+                readonly
+                data-quantity-input
+              />
+              <button type="button" data-quantity-action="increase" aria-label="Aumenta quantita">
+                +
+              </button>
+            </div>
           </div>
 
           <div class="detail-actions">
@@ -368,6 +431,18 @@ function renderProductPage() {
   const quantityInput = mount.querySelector("[data-quantity-input]");
   const notice = mount.querySelector("[data-product-notice]");
   const addButton = mount.querySelector("[data-add-to-cart]");
+
+  mount.querySelectorAll("[data-quantity-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const currentValue = Math.max(1, Number(quantityInput.value || 1));
+      const nextValue =
+        button.dataset.quantityAction === "increase"
+          ? currentValue + 1
+          : Math.max(1, currentValue - 1);
+
+      quantityInput.value = String(nextValue);
+    });
+  });
 
   addButton.addEventListener("click", () => {
     const quantity = Math.max(1, Number(quantityInput.value || 1));
@@ -436,6 +511,7 @@ function renderCartPage() {
               (item, index) => `
                 <article class="cart-item">
                   <div class="cart-thumb ${item.mediaClass}">
+                    ${renderProductGraphic("product-graphic-cart")}
                     <span>${item.quantity}x</span>
                   </div>
                   <div class="cart-item-copy">
@@ -505,10 +581,30 @@ function renderCartPage() {
   }
 }
 
+function bindAccountForms() {
+  document.querySelectorAll("[data-account-form]").forEach((form) => {
+    const notice = form.querySelector("[data-account-notice]");
+    const action = form.dataset.accountForm;
+    const button = form.querySelector("[data-account-button]");
+
+    if (!notice || !button) {
+      return;
+    }
+
+    button.addEventListener("click", () => {
+      notice.textContent =
+        action === "register"
+          ? "Registrazione pronta lato frontend: quando vuoi colleghiamo account, ordini e preferiti."
+          : "Accesso pronto lato frontend: quando vuoi colleghiamo login vero e area personale.";
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   updateYear();
   renderCartCount();
   renderShopCatalog();
   renderProductPage();
   renderCartPage();
+  bindAccountForms();
 });

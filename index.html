@@ -38,7 +38,10 @@
           </a>
         </nav>
 
-        <a class="button button-ghost" href="shop.html">Scopri la collezione</a>
+        <div class="header-actions">
+          <a class="button button-ghost" href="account.html#login">Accedi</a>
+          <a class="button button-primary" href="account.html#register">Registrati</a>
+        </div>
       </header>
 
       <main>
@@ -77,10 +80,13 @@
           </div>
 
           <div class="hero-visual" aria-hidden="true">
-            <div class="visual-card visual-card-main">
-              <p>Drop preview</p>
-              <strong>CRIMI GANG</strong>
-              <span>Ride hard. Film louder.</span>
+            <div class="visual-card visual-card-main visual-logo-card">
+              <img src="assets/logo-crimi.jpg" alt="Logo Crimi Gang" />
+              <div class="visual-logo-copy">
+                <p>Official logo</p>
+                <strong>CRIMI GANG</strong>
+                <span>Creator energy, ride culture e palette verde-azzurro.</span>
+              </div>
             </div>
             <div class="visual-card visual-card-small">
               <p>Color code</p>
@@ -121,6 +127,9 @@
             <article class="product-card featured">
               <a class="media-link" href="product.html?id=storm-logo-hoodie" aria-label="Apri Storm Logo Hoodie">
                 <div class="product-media media-hoodie media-hoodie-storm">
+                  <div class="product-graphic" aria-hidden="true">
+                    <img src="assets/logo-crimi.jpg" alt="" loading="lazy" decoding="async" />
+                  </div>
                   <span>Felpa hero</span>
                 </div>
               </a>
@@ -144,6 +153,9 @@
             <article class="product-card">
               <a class="media-link" href="product.html?id=core-logo-tee" aria-label="Apri Core Logo Tee">
                 <div class="product-media media-tee media-tee-core">
+                  <div class="product-graphic" aria-hidden="true">
+                    <img src="assets/logo-crimi.jpg" alt="" loading="lazy" decoding="async" />
+                  </div>
                   <span>T-Shirt</span>
                 </div>
               </a>
@@ -171,6 +183,9 @@
                 aria-label="Apri Helmet Sticker Pack"
               >
                 <div class="product-media media-accessories media-accessories-sticker">
+                  <div class="product-graphic" aria-hidden="true">
+                    <img src="assets/logo-crimi.jpg" alt="" loading="lazy" decoding="async" />
+                  </div>
                   <span>Sticker</span>
                 </div>
               </a>
@@ -261,6 +276,25 @@
               </div>
               <small>Nessun backend ancora: la sezione e pronta per essere collegata.</small>
             </form>
+          </div>
+        </section>
+
+        <section class="section account-preview" id="account">
+          <div class="account-strip">
+            <div>
+              <p class="eyebrow">Account ready</p>
+              <h2>Accedi o registrati con una sezione gia pronta per lo shop.</h2>
+              <p>
+                Ho aggiunto l'area account lato frontend: per ora e una demo
+                visiva, ma e gia pensata per login, registrazione, ordini e
+                accesso prioritario ai prossimi drop.
+              </p>
+            </div>
+
+            <div class="account-strip-actions">
+              <a class="button button-secondary" href="account.html#login">Accedi</a>
+              <a class="button button-primary" href="account.html#register">Registrati</a>
+            </div>
           </div>
         </section>
 
