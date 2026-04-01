@@ -49,7 +49,7 @@ function colorSwatchValue(name) {
 function renderProductGraphic(modifier = "") {
   return `
     <div class="product-graphic${modifier ? ` ${modifier}` : ""}" aria-hidden="true">
-      <img src="assets/logo-crimi.jpg" alt="" loading="lazy" decoding="async" />
+      <img src="assets/logo-crimi.svg" alt="" loading="lazy" decoding="async" />
     </div>
   `;
 }
@@ -373,7 +373,7 @@ function renderProductPage() {
             <button class="button button-primary" type="button" data-add-to-cart>
               Aggiungi al carrello
             </button>
-            <a class="button button-secondary" href="cart.html">
+            <a class="button buttton-secondary" href="cart.html">
               Apri carrello
             </a>
           </div>
@@ -478,7 +478,7 @@ function renderCartPage() {
       <section class="section cart-page">
         <div class="section-heading">
           <p class="eyebrow">Carrello</p>
-          <h1>Il tuo carrello e vuoto.</h1>
+          <h1>Il tuo carrello è vuoto.</h1>
           <p>
             Parti dallo shop, scegli un prodotto, seleziona colore, taglia e
             quantita, poi torna qui per rivedere il riepilogo.
@@ -499,8 +499,8 @@ function renderCartPage() {
         <p class="eyebrow">Carrello</p>
         <h1>Rivedi i prodotti scelti prima del checkout.</h1>
         <p>
-          Il checkout vero non e ancora collegato, ma il riepilogo e gia pronto
-          per taglie, colori, quantita e totale.
+          Il checkout vero non è ancora collegato, ma il riepilogo è già pronto
+          per taglie, colori, quantità e totale.
         </p>
       </div>
 
