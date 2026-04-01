@@ -1,6 +1,18 @@
 const CART_KEY = "crimi-gang-cart";
 const PRODUCTS = Array.isArray(window.CRIMI_PRODUCTS) ? window.CRIMI_PRODUCTS : [];
 const CATEGORIES = Array.isArray(window.CRIMI_CATEGORIES) ? window.CRIMI_CATEGORIES : [];
+const OVERRIDES_STYLESHEET = "overrides.css";
+
+function ensureOverridesStylesheet() {
+  if (document.querySelector(`link[href="${OVERRIDES_STYLESHEET}"]`)) {
+    return;
+  }
+
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = OVERRIDES_STYLESHEET;
+  document.head.appendChild(link);
+}
 
 function formatPrice(value) {
   return `${value}€`;
@@ -49,8 +61,8 @@ function colorSwatchValue(name) {
 function renderProductGraphic(modifier = "") {
   return `
     <div class="product-graphic${modifier ? ` ${modifier}` : ""}" aria-hidden="true">
-      <img src="assets/logo-crimi.jpg" alt="" loading="lazy" decoding="async" />
-    </div.
+      <img src="assets/logo-crimi-square.svg" alt="" loading="lazy" decoding="async" />
+    </div>
   `;
 }
 
@@ -586,6 +598,7 @@ function bindAccountForms() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  ensureOverridesStylesheet();
   updateYear();
   renderCartCount();
   renderShopCatalog();

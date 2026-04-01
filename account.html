@@ -62,7 +62,7 @@
 
           <div class="subhero-panel account-logo-panel">
             <p class="eyebrow">Crimi Gang</p>
-            <img src="assets/logo-crimi.jpg" alt="Logo Crimi Gang" />
+            <img src="assets/logo-crimi-square.svg" alt="Logo Crimi Gang" />
             <p>
               Verde, azzurro, moto, community e merch: qui la parte shop inizia
               ad avere anche una vera identita utente.
@@ -87,4 +87,51 @@
               <form class="account-form" data-account-form="login">
                 <label for="login-email">Email</label>
                 <input id="login-email" type="email" placeholder="nome@email.com" />
-                <label fo¶»§q«^uú+n·¯ŠÜ¢Æ¥
+                <label for="login-password">Password</label>
+                <input id="login-password" type="password" placeholder="Inserisci la password" />
+                <button class="button button-primary" type="button" data-account-button>
+                  Accedi
+                </button>
+                <p class="account-note" data-account-notice>
+                  Frontend pronto: qui collegheremo il login vero.
+                </p>
+              </form>
+            </article>
+
+            <article class="account-card account-card-accent" id="register">
+              <p class="eyebrow">Registrati</p>
+              <h3>Crea il tuo profilo per drop, ordini e novita.</h3>
+              <form class="account-form" data-account-form="register">
+                <label for="register-name">Nome</label>
+                <input id="register-name" type="text" placeholder="Il tuo nome" />
+                <label for="register-email">Email</label>
+                <input id="register-email" type="email" placeholder="nome@email.com" />
+                <label for="register-password">Password</label>
+                <input
+                  id="register-password"
+                  type="password"
+                  placeholder="Crea una password"
+                />
+                <button class="button button-primary" type="button" data-account-button>
+                  Registrati
+                </button>
+                <p class="account-note" data-account-notice>
+                  Frontend pronto: qui collegheremo registrazione, ordini e profilo.
+                </p>
+              </form>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Crimi Gang</p>
+        <span>Area account frontend pronta per accesso e registrazione.</span>
+        <small>&copy; <span id="year"></span> Crimi Gang. All rights reserved.</small>
+      </footer>
+    </div>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

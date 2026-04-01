@@ -1,0 +1,48 @@
+:root {
+  --brand-logo: url("assets/logo-crimi-square.svg");
+}
+
+.brand-mark {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0)),
+    var(--brand-logo) center / cover no-repeat;
+  color: transparent;
+  font-size: 0;
+}
+
+.hero h1 {
+  font-size: clamp(2.45rem, 5vw, 4.25rem);
+  max-width: 11ch;
+}
+
+.hero-text {
+  max-width: 34rem;
+}
+
+.shop-page-title {
+  font-size: clamp(2rem, 3.9vw, 3rem);
+}
+
+.subhero h1,
+.section-heading h2,
+.spotlight-copy h2,
+.drop-card h2,
+.detail-copy h1,
+.cart-page .section-heading h1,
+.cart-summary h2,
+.account-strip h2 {
+  font-size: clamp(1.8rem, 3.3vw, 2.7rem);
+}
+
+.visual-card-main strong {
+  font-size: clamp(1.95rem, 3vw, 2.75rem);
+}
+
+.shop-hero {
+  gap: 0.85rem;
+  padding-bottom: 1.5rem;
+}
+
+.shop-listing-section {
+  padding-top: 0;
+}
