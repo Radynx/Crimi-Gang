@@ -49,8 +49,8 @@ function colorSwatchValue(name) {
 function renderProductGraphic(modifier = "") {
   return `
     <div class="product-graphic${modifier ? ` ${modifier}` : ""}" aria-hidden="true">
-      <img src="assets/logo-crimi.svg" alt="" loading="lazy" decoding="async" />
-    </div>
+      <img src="assets/logo-crimi.jpg" alt="" loading="lazy" decoding="async" />
+    </div.
   `;
 }
 
@@ -207,22 +207,7 @@ function renderShopCatalog() {
     return;
   }
 
-  mount.innerHTML = CATEGORIES.map((category) => {
-    const categoryProducts = PRODUCTS.filter((product) => product.category === category.id);
-
-    return `
-      <section class="category-block" id="${category.id}">
-        <div class="category-head">
-          <p class="eyebrow">${category.label}</p>
-          <h3>${category.title}</h3>
-          <p>${category.description}</p>
-        </div>
-        <div class="mini-grid">
-          ${categoryProducts.map(renderShopCard).join("")}
-        </div>
-      </section>
-    `;
-  }).join("");
+  mount.innerHTML = PRODUCTS.map(renderShopCard).join("");
 
   mount.querySelectorAll("[data-quick-add]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -373,7 +358,7 @@ function renderProductPage() {
             <button class="button button-primary" type="button" data-add-to-cart>
               Aggiungi al carrello
             </button>
-            <a class="button buttton-secondary" href="cart.html">
+            <a class="button button-secondary" href="cart.html">
               Apri carrello
             </a>
           </div>
@@ -478,7 +463,7 @@ function renderCartPage() {
       <section class="section cart-page">
         <div class="section-heading">
           <p class="eyebrow">Carrello</p>
-          <h1>Il tuo carrello è vuoto.</h1>
+          <h1>Il tuo carrello e vuoto.</h1>
           <p>
             Parti dallo shop, scegli un prodotto, seleziona colore, taglia e
             quantita, poi torna qui per rivedere il riepilogo.
@@ -499,8 +484,8 @@ function renderCartPage() {
         <p class="eyebrow">Carrello</p>
         <h1>Rivedi i prodotti scelti prima del checkout.</h1>
         <p>
-          Il checkout vero non è ancora collegato, ma il riepilogo è già pronto
-          per taglie, colori, quantità e totale.
+          Il checkout vero non e ancora collegato, ma il riepilogo e gia pronto
+          per taglie, colori, quantita e totale.
         </p>
       </div>
 
