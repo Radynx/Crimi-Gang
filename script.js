@@ -4,7 +4,7 @@ const CATEGORIES = Array.isArray(window.CRIMI_CATEGORIES) ? window.CRIMI_CATEGOR
 const OVERRIDES_STYLESHEET = "overrides.css";
 const BRAND_LABEL = "Shop";
 const BRAND_LOGO_FALLBACK_PATH = "assets/logo-crimi-square-web.jpg";
-const BRAND_LOGO_PATH = "assets/logo-crimi-square.svg";
+const BRAND_LOGO_PATH = "assets/logo-crimi-square-web.jpg";
 const LEGACY_LOGO_PATH = "logo-crimi-square.svg";
 
 function ensureOverridesStylesheet() {
@@ -139,7 +139,7 @@ function colorSwatchValue(name) {
 function renderProductGraphic(modifier = "") {
   return `
     <div class="product-graphic${modifier ? ` ${modifier}` : ""}" aria-hidden="true">
-      <img src="assets/logo-crimi-square.svg" alt="" loading="lazy" decoding="async" />
+      <img src="assets/logo-crimi-square-web.jpg" alt="" loading="lazy" decoding="async" />
     </div>
   `;
 }
