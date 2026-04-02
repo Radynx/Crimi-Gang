@@ -1,5 +1,5 @@
 :root {
-  --brand-logo: url("assets/logo-crimi-square.svg");
+  --brand-logo: url("assets/logo-crimi-square-web.jpg");
 }
 
 .brand-mark {
@@ -8,6 +8,23 @@
     var(--brand-logo) center / cover no-repeat;
   color: transparent;
   font-size: 0;
+}
+
+.brand-copy small {
+  position: relative;
+  color: transparent;
+}
+
+.brand-copy small::after {
+  content: "Shop";
+  position: absolute;
+  inset: 0 auto auto 0;
+  color: var(--muted);
+}
+
+[data-page="home"] .hero-actions .button-secondary[href="social.html"],
+[data-page="home"] #social-preview {
+  display: none !important;
 }
 
 .hero h1 {

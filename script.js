@@ -2,6 +2,9 @@ const CART_KEY = "crimi-gang-cart";
 const PRODUCTS = Array.isArray(window.CRIMI_PRODUCTS) ? window.CRIMI_PRODUCTS : [];
 const CATEGORIES = Array.isArray(window.CRIMI_CATEGORIES) ? window.CRIMI_CATEGORIES : [];
 const OVERRIDES_STYLESHEET = "overrides.css";
+const BRAND_LABEL = "Shop";
+const BRAND_LOGO_PATH = "assets/logo-crimi-square-web.jpg";
+const LEGACY_LOGO_PATH = "logo-crimi-square.svg";
 
 function ensureOverridesStylesheet() {
   if (document.querySelector(`link[href="${OVERRIDES_STYLESHEET}"]`)) {
@@ -12,6 +15,72 @@ function ensureOverridesStylesheet() {
   link.rel = "stylesheet";
   link.href = OVERRIDES_STYLESHEET;
   document.head.appendChild(link);
+}
+
+function applyGlobalBranding() {
+  if (document.title.includes("Ridewear Shop")) {
+    document.title = document.title.replace("Ridewear Shop", BRAND_LABEL);
+  }
+
+  document.querySelectorAll(".brand-copy small").forEach((node) => {
+    node.textContent = BRAND_LABEL;
+  });
+
+  document.querySelectorAll("img").forEach((image) => {
+    const source = image.getAttribute("src") || "";
+
+    if (source.includes(LEGACY_LOGO_PATH)) {
+      image.setAttribute("src", BRAND_LOGO_PATH);
+    }
+  });
+
+  if (document.body.dataset.page !== "home") {
+    return;
+  }
+
+  document
+    .querySelector('.hero-actions a[href="social.html"]')
+    ?.remove();
+
+  document.querySelector("#social-preview")?.remove();
+
+  const heroText = document.querySelector(".hero-text");
+
+  if (heroText && heroText.textContent.includes("social e carrello")) {
+    heroText.textContent = heroText.textContent.replace("social e carrello", "shop e carrello");
+  }
+}
+
+function initTicker() {
+  const track = document.querySelector(".ticker-track");
+
+  if (!track || track.dataset.ready === "true") {
+    return;
+  }
+
+  let groups = Array.from(track.querySelectorAll(".ticker-group"));
+
+  if (!groups.length) {
+    const items = Array.from(track.children);
+
+    if (!items.length) {
+      return;
+    }
+
+    const group = document.createElement("div");
+    group.className = "ticker-group";
+    items.forEach((item) => group.appendChild(item));
+    track.appendChild(group);
+    groups = [group];
+  }
+
+  if (groups.length === 1) {
+    const clone = groups[0].cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    track.appendChild(clone);
+  }
+
+  track.dataset.ready = "true";
 }
 
 function formatPrice(value) {
@@ -61,7 +130,7 @@ function colorSwatchValue(name) {
 function renderProductGraphic(modifier = "") {
   return `
     <div class="product-graphic${modifier ? ` ${modifier}` : ""}" aria-hidden="true">
-      <img src="assets/logo-crimi-square.svg" alt="" loading="lazy" decoding="async" />
+      <img src="assets/logo-crimi-square-web.jpg" alt="" loading="lazy" decoding="async" />
     </div>
   `;
 }
@@ -601,8 +670,12 @@ document.addEventListener("DOMContentLoaded", () => {
   ensureOverridesStylesheet();
   updateYear();
   renderCartCount();
+  applyGlobalBranding();
+  initTicker();
   renderShopCatalog();
   renderProductPage();
   renderCartPage();
   bindAccountForms();
+  applyGlobalBranding();
+  initTicker();
 });
