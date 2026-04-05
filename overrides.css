@@ -63,3 +63,47 @@
 .shop-listing-section {
   padding-top: 0;
 }
+
+@media (max-width: 760px) {
+  [data-page="home"] .hero-visual {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: 10px;
+  }
+
+  [data-page="home"] .hero-visual .visual-card {
+    position: relative;
+    inset: auto;
+  }
+
+  [data-page="home"] .visual-card-main {
+    width: min(100%, 360px);
+    margin: 0 auto;
+    transform: none;
+  }
+
+  [data-page="home"] .visual-card-small {
+    right: auto;
+    left: auto;
+    bottom: auto;
+    width: min(100%, 280px);
+    min-width: 0;
+    margin: 0 auto;
+  }
+
+  [data-page="home"] .speed-ring {
+    top: 28px;
+    width: min(100%, 320px);
+  }
+
+  [data-page="home"] .visual-logo-card img {
+    width: min(100%, 250px);
+  }
+
+  [data-page="home"] .visual-card-small span {
+    line-height: 1.6;
+  }
+}

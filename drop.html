@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Pagina drop di Crimi Gang con countdown visuale, iscrizione e spazio dedicato ai prossimi lanci."
+    />
+    <title>Drop | Crimi Gang</title>
+    <script src="brand-logo.js?v=20260402b"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Manrope:wght@400;500;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="overrides.css" />
+  </head>
+  <body data-page="drop">
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Torna alla home di Crimi Gang">
+          <span class="brand-mark">CG</span>
+          <span class="brand-copy">
+            <strong>Crimi Gang</strong>
+            <small>Shop</small>
+          </span>
+        </a>
+
+        <nav class="nav">
+          <a href="shop.html">Shop</a>
+          <a href="social.html#story">Chi siamo</a>
+          <a href="drop.html" aria-current="page">Drop</a>
+          <a href="social.html#social">Social</a>
+          <a class="cart-link" href="cart.html">
+            Carrello
+            <span class="cart-count" data-cart-count>0</span>
+          </a>
+        </nav>
+
+        <div class="header-actions">
+          <a class="button button-ghost" href="account.html#login">Accedi</a>
+          <a class="button button-primary" href="account.html#register">Registrati</a>
+        </div>
+      </header>
+
+      <main>
+        <section class="subhero">
+          <div class="subhero-copy">
+            <p class="eyebrow">Next drop</p>
+            <h1>La pagina separata per hype, lanci e countdown del merch.</h1>
+            <p class="hero-text">
+              Qui teniamo tutta la parte drop fuori dalla home: anteprima del
+              lancio, iscrizione, lista prioritaria e spazio per spingere il
+              prossimo rilascio senza appesantire il sito principale.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#notify">Ricevi il prossimo drop</a>
+              <a class="button button-secondary" href="shop.html">Vai allo shop</a>
+            </div>
+          </div>
+
+          <div class="subhero-panel">
+            <p class="eyebrow">Drop mode</p>
+            <h2>Una pagina pensata solo per creare attesa e conversione.</h2>
+            <p>
+              Quando vorrai possiamo aggiungere countdown reali, preview dei
+              pezzi, orari di uscita e accesso anticipato per chi si registra.
+            </p>
+          </div>
+        </section>
+
+        <section class="section drop-page-section" id="notify">
+          <div class="drop-card">
+            <div>
+              <p class="eyebrow">Lista prioritaria</p>
+              <h2>Preparata per capsule, countdown e primi accessi.</h2>
+              <p>
+                Questo blocco resta pronto per newsletter, prenotazioni o lista
+                prioritaria appena decidete la prima collezione ufficiale.
+              </p>
+            </div>
+
+            <form class="drop-form">
+              <label for="drop-email">Ricevi il primo drop</label>
+              <div class="form-row">
+                <input
+                  id="drop-email"
+                  type="email"
+                  placeholder="nome@email.com"
+                  aria-label="Inserisci la tua email"
+                />
+                <button type="button">Avvisami</button>
+              </div>
+              <small>Nessun backend ancora: la sezione e pronta per essere collegata.</small>
+            </form>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Roadmap drop</p>
+            <h2>Tutto il lancio in una schermata dedicata.</h2>
+            <p>
+              Ho spostato qui la parte strategica del drop, cosi la home resta
+              piu pulita e questa pagina puo crescere in modo piu forte.
+            </p>
+          </div>
+
+          <div class="story-panel">
+            <article class="story-card">
+              <strong>Preview prodotti</strong>
+              <p>
+                Spazio perfetto per teaser di felpe, tee, pantaloni e accessori
+                prima del rilascio.
+              </p>
+            </article>
+            <article class="story-card">
+              <strong>Countdown</strong>
+              <p>
+                Possiamo aggiungere un timer vero con data, ora e apertura
+                dello shop appena vuoi.
+              </p>
+            </article>
+            <article class="story-card accent">
+              <strong>Lista prioritaria</strong>
+              <p>
+                La registrazione puo diventare il modo per ricevere accesso
+                anticipato e notifiche sul lancio.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Crimi Gang</p>
+        <span>Pagina dedicata ai drop e ai prossimi lanci del brand.</span>
+        <small>&copy; <span id="year"></span> Crimi Gang. All rights reserved.</small>
+      </footer>
+    </div>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
