@@ -64,6 +64,49 @@
   padding-top: 0;
 }
 
+.social-page-card-contact {
+  scroll-margin-top: 120px;
+  background:
+    linear-gradient(145deg, rgba(105, 255, 155, 0.12), rgba(89, 215, 255, 0.1)),
+    var(--panel);
+}
+
+.contact-lines {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.contact-lines a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease;
+}
+
+.contact-lines a:hover,
+.contact-lines a:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(89, 215, 255, 0.28);
+  color: var(--sky);
+}
+
+.contact-note {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
 @media (max-width: 760px) {
   [data-page="home"] .hero-visual {
     min-height: auto;
