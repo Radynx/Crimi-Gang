@@ -59,6 +59,10 @@ function isAccountPage() {
   return document.body?.dataset?.page === "account";
 }
 
+function isProfilePage() {
+  return document.body?.dataset?.page === "profile";
+}
+
 function setNotice(element, message, status = "neutral") {
   if (!element) {
     return;
@@ -88,17 +92,23 @@ function renderHeaderActions(user) {
       return;
     }
 
-    const accountLabel = escapeHtml(user.displayName || user.email || "Account");
+    const accountLabel = escapeHtml(user.displayName || user.email || "Profilo");
 
     actions.innerHTML = `
-      <a class="button button-ghost header-user-pill" href="account.html">${accountLabel}</a>
+      <a class="button button-ghost header-user-pill" href="profile.html">${accountLabel}</a>
       <button class="button button-primary" type="button" data-auth-logout-global>Esci</button>
     `;
   });
 
   document.querySelectorAll("[data-auth-logout-global]").forEach((button) => {
     button.addEventListener("click", async () => {
-      await signOut(auth);
+      button.disabled = true;
+
+      try {
+        await signOut(auth);
+      } finally {
+        button.disabled = false;
+      }
     });
   });
 }
@@ -107,8 +117,9 @@ function renderAccountState(user) {
   const title = document.querySelector("[data-auth-title]");
   const copy = document.querySelector("[data-auth-copy]");
   const logoutButton = document.querySelector("[data-auth-logout]");
+  const profileLink = document.querySelector("[data-auth-profile-link]");
 
-  if (!title || !copy || !logoutButton) {
+  if (!title || !copy || !logoutButton || !profileLink) {
     return;
   }
 
@@ -117,32 +128,73 @@ function renderAccountState(user) {
     copy.textContent =
       "Registrati oppure accedi per salvare il tuo profilo e preparare il collegamento con ordini e drop.";
     logoutButton.hidden = true;
+    profileLink.hidden = true;
     return;
   }
 
   const displayName = user.displayName || "Membro Crimi Gang";
   title.textContent = `Sei dentro come ${displayName}.`;
-  copy.textContent = `Email collegata: ${user.email || "non disponibile"}. La sessione resta attiva su questo dispositivo.`;
+  copy.textContent = `Email collegata: ${user.email || "non disponibile"}. La sessione resta attiva su questo dispositivo anche mentre cambi pagina.`;
   logoutButton.hidden = false;
+  profileLink.hidden = false;
 }
 
-function bindLogoutButton() {
-  const logoutButton = document.querySelector("[data-auth-logout]");
+function renderProfileState(user) {
+  const title = document.querySelector("[data-profile-title]");
+  const copy = document.querySelector("[data-profile-copy]");
+  const email = document.querySelector("[data-profile-email]");
+  const form = document.querySelector("[data-profile-form]");
+  const nameInput = document.querySelector("[data-profile-name]");
+  const guestCta = document.querySelector("[data-profile-guest]");
+  const memberBlock = document.querySelector("[data-profile-member]");
+  const logoutButton = document.querySelector("[data-profile-logout]");
 
-  if (!logoutButton) {
+  if (!title || !copy || !email || !form || !nameInput || !guestCta || !memberBlock || !logoutButton) {
     return;
   }
 
-  logoutButton.addEventListener("click", async () => {
-    logoutButton.disabled = true;
-    logoutButton.textContent = "Uscita...";
+  if (!user) {
+    title.textContent = "Accedi per vedere il tuo profilo.";
+    copy.textContent =
+      "La sessione Firebase viene letta qui automaticamente. Se non sei dentro, entra dalla pagina account.";
+    email.textContent = "Email: non disponibile";
+    guestCta.hidden = false;
+    memberBlock.hidden = true;
+    logoutButton.hidden = true;
+    return;
+  }
 
-    try {
-      await signOut(auth);
-    } finally {
-      logoutButton.disabled = false;
-      logoutButton.textContent = "Esci";
-    }
+  const displayName = user.displayName || "Membro Crimi Gang";
+  title.textContent = `Profilo di ${displayName}`;
+  copy.textContent =
+    "Qui puoi cambiare il nome mostrato sul sito e uscire dal tuo account quando vuoi.";
+  email.textContent = `Email: ${user.email || "non disponibile"}`;
+  nameInput.value = user.displayName || "";
+  guestCta.hidden = true;
+  memberBlock.hidden = false;
+  logoutButton.hidden = false;
+}
+
+function refreshSignedInUi(user = auth.currentUser) {
+  renderHeaderActions(user);
+  renderAccountState(user);
+  renderProfileState(user);
+}
+
+function bindSharedLogoutButtons() {
+  document.querySelectorAll("[data-auth-logout], [data-profile-logout]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      const originalLabel = button.textContent;
+      button.textContent = "Uscita...";
+
+      try {
+        await signOut(auth);
+      } finally {
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
   });
 }
 
@@ -180,8 +232,6 @@ function bindAccountForm(form) {
     setNotice(notice, "Controllo in corso...", "neutral");
 
     try {
-      await setPersistence(auth, browserLocalPersistence);
-
       if (action === "register") {
         const credentials = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -189,6 +239,7 @@ function bindAccountForm(form) {
           await updateProfile(credentials.user, { displayName: name });
         }
 
+        refreshSignedInUi(credentials.user);
         setNotice(
           notice,
           "Registrazione completata. Il tuo account Crimi Gang e pronto.",
@@ -198,7 +249,8 @@ function bindAccountForm(form) {
         return;
       }
 
-      await signInWithEmailAndPassword(auth, email, password);
+      const credentials = await signInWithEmailAndPassword(auth, email, password);
+      refreshSignedInUi(credentials.user);
       setNotice(notice, "Accesso eseguito con successo.", "success");
       form.reset();
     } catch (error) {
@@ -217,18 +269,70 @@ function bindAccountForms() {
   document.querySelectorAll("[data-account-form]").forEach(bindAccountForm);
 }
 
-function initFirebaseAuth() {
+function bindProfileForm() {
+  if (!isProfilePage()) {
+    return;
+  }
+
+  const form = document.querySelector("[data-profile-form]");
+  const notice = document.querySelector("[data-profile-notice]");
+  const input = document.querySelector("[data-profile-name]");
+  const button = document.querySelector("[data-profile-button]");
+
+  if (!form || !notice || !input || !button) {
+    return;
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const nextName = input.value.trim();
+
+    if (!auth.currentUser) {
+      setNotice(notice, "Effettua prima l'accesso per modificare il nome.", "error");
+      return;
+    }
+
+    if (!nextName) {
+      setNotice(notice, "Scrivi un nome prima di salvare.", "error");
+      return;
+    }
+
+    setButtonLoading(button, true, "Salva nome", "Salvataggio...");
+    setNotice(notice, "Aggiornamento profilo in corso...", "neutral");
+
+    try {
+      await updateProfile(auth.currentUser, { displayName: nextName });
+      refreshSignedInUi(auth.currentUser);
+      setNotice(notice, "Nome aggiornato correttamente.", "success");
+    } catch (error) {
+      setNotice(notice, authErrorMessage(error), "error");
+    } finally {
+      setButtonLoading(button, false, "Salva nome", "Salvataggio...");
+    }
+  });
+}
+
+async function initFirebaseAuth() {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+  } catch {
+    // Ignore and continue with Firebase default persistence.
+  }
+
   bindAccountForms();
-  bindLogoutButton();
+  bindProfileForm();
+  bindSharedLogoutButtons();
 
   onAuthStateChanged(auth, (user) => {
-    renderHeaderActions(user);
-    renderAccountState(user);
+    refreshSignedInUi(user);
   });
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initFirebaseAuth, { once: true });
+  document.addEventListener("DOMContentLoaded", () => {
+    void initFirebaseAuth();
+  }, { once: true });
 } else {
-  initFirebaseAuth();
+  void initFirebaseAuth();
 }

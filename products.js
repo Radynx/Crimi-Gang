@@ -346,3 +346,24 @@ window.CRIMI_PRODUCTS = [
     mediaClass: "media-accessories media-accessories-patch",
   },
 ];
+
+(() => {
+  const firebaseAuthModule = "firebase-auth.js";
+
+  const ensureFirebaseAuthModule = () => {
+    if (document.querySelector(`script[type="module"][src="${firebaseAuthModule}"]`)) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = firebaseAuthModule;
+    document.body.appendChild(script);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", ensureFirebaseAuthModule, { once: true });
+  } else {
+    ensureFirebaseAuthModule();
+  }
+})();
