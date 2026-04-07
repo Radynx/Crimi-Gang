@@ -33,6 +33,7 @@
           <a href="shop.html">Shop</a>
           <a href="social.html">Chi siamo</a>
           <a href="drop.html">Drop</a>
+          <a href="contatti.html">Contatti</a>
           <a class="cart-link" href="cart.html" aria-current="page">
             Carrello
             <span class="cart-count" data-cart-count>0</span>
@@ -49,12 +50,27 @@
 
       <footer class="footer">
         <p>Crimi Gang</p>
-        <span>Riepilogo prodotti scelti dalla community.</span>
+        <span>Riepilogo prodotti nel carrello</span>
         <small>&copy; <span id="year"></span> Crimi Gang. All rights reserved.</small>
       </footer>
     </div>
 
     <script src="products.js"></script>
     <script src="script.js"></script>
+    <script>
+      (() => {
+        const fixEmptyCartHeading = () => {
+          document.querySelectorAll("h1").forEach((heading) => {
+            if (heading.textContent.trim() === "Il tuo carrello e vuoto.") {
+              heading.textContent = "Il tuo carrello È vuoto.";
+            }
+          });
+        };
+
+        const observer = new MutationObserver(fixEmptyCartHeading);
+        observer.observe(document.body, { childList: true, subtree: true });
+        fixEmptyCartHeading();
+      })();
+    </script>
   </body>
 </html>
