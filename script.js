@@ -553,7 +553,7 @@ function renderCartPage() {
       <section class="section cart-page">
         <div class="section-heading">
           <p class="eyebrow">Carrello</p>
-          <h1>Il tuo carrello e vuoto.</h1>
+          <h1>Il tuo carrello È vuoto.</h1>
           <p>
             Parti dallo shop, scegli un prodotto, seleziona colore, taglia e
             quantita, poi torna qui per rivedere il riepilogo.

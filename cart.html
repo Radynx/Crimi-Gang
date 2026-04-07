@@ -57,20 +57,5 @@
 
     <script src="products.js"></script>
     <script src="script.js"></script>
-    <script>
-      (() => {
-        const fixEmptyCartHeading = () => {
-          document.querySelectorAll("h1").forEach((heading) => {
-            if (heading.textContent.trim() === "Il tuo carrello e vuoto.") {
-              heading.textContent = "Il tuo carrello È vuoto.";
-            }
-          });
-        };
-
-        const observer = new MutationObserver(fixEmptyCartHeading);
-        observer.observe(document.body, { childList: true, subtree: true });
-        fixEmptyCartHeading();
-      })();
-    </script>
   </body>
 </html>
