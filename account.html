@@ -33,6 +33,7 @@
           <a href="shop.html">Shop</a>
           <a href="social.html">Chi siamo</a>
           <a href="drop.html">Drop</a>
+          <a href="contatti.html">Contatti</a>
           <a class="cart-link" href="cart.html">
             Carrello
             <span class="cart-count" data-cart-count>0</span>
@@ -51,13 +52,16 @@
             <p class="eyebrow">Account area</p>
             <h1>Accedi o registrati per entrare nell'universo Crimi Gang.</h1>
             <p class="hero-text">
-              Questa pagina e gia pronta lato frontend per trasformarsi in area
-              cliente: accesso, registrazione, ordini, preferiti e accesso
-              anticipato ai drop.
+              Questa pagina ora puo collegarsi davvero a Firebase
+              Authentication per accesso e registrazione email/password, con
+              sessione attiva e logout.
             </p>
             <div class="hero-actions">
               <a class="button button-primary" href="#login">Vai ad accedi</a>
               <a class="button button-secondary" href="#register">Vai a registrati</a>
+              <button class="button button-secondary" type="button" data-auth-logout hidden>
+                Esci
+              </button>
             </div>
           </div>
 
@@ -78,11 +82,22 @@
         <section class="section account-page-section">
           <div class="section-heading">
             <p class="eyebrow">Frontend ready</p>
-            <h2>Accesso e registrazione con un look coerente col brand.</h2>
+            <h2>Accesso e registrazione reali con un look coerente col brand.</h2>
             <p>
-              I moduli qui sotto sono visuali e pronti per essere collegati a
-              un backend reale quando vorrai attivare utenti, ordini e profilo.
+              I moduli qui sotto usano Firebase Authentication per creare
+              account e fare login con email e password.
             </p>
+          </div>
+
+          <div class="account-session">
+            <div>
+              <p class="eyebrow">Stato account</p>
+              <h3 data-auth-title>Non hai ancora effettuato l'accesso.</h3>
+              <p data-auth-copy>
+                Registrati oppure accedi per salvare il tuo profilo e preparare
+                il collegamento con ordini e drop.
+              </p>
+            </div>
           </div>
 
           <div class="account-grid">
@@ -91,14 +106,28 @@
               <h3>Torna dentro e riparti dal tuo carrello.</h3>
               <form class="account-form" data-account-form="login">
                 <label for="login-email">Email</label>
-                <input id="login-email" type="email" placeholder="nome@email.com" />
+                <input
+                  id="login-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="nome@email.com"
+                  required
+                />
                 <label for="login-password">Password</label>
-                <input id="login-password" type="password" placeholder="Inserisci la password" />
-                <button class="button button-primary" type="button" data-account-button>
+                <input
+                  id="login-password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Inserisci la password"
+                  required
+                />
+                <button class="button button-primary" type="submit" data-account-button>
                   Accedi
                 </button>
                 <p class="account-note" data-account-notice>
-                  Frontend pronto: qui collegheremo il login vero.
+                  Inserisci i dati del tuo account Crimi Gang.
                 </p>
               </form>
             </article>
@@ -108,20 +137,37 @@
               <h3>Crea il tuo profilo per drop, ordini e novita.</h3>
               <form class="account-form" data-account-form="register">
                 <label for="register-name">Nome</label>
-                <input id="register-name" type="text" placeholder="Il tuo nome" />
+                <input
+                  id="register-name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  placeholder="Il tuo nome"
+                />
                 <label for="register-email">Email</label>
-                <input id="register-email" type="email" placeholder="nome@email.com" />
+                <input
+                  id="register-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="nome@email.com"
+                  required
+                />
                 <label for="register-password">Password</label>
                 <input
                   id="register-password"
+                  name="password"
                   type="password"
+                  autocomplete="new-password"
+                  minlength="6"
                   placeholder="Crea una password"
+                  required
                 />
-                <button class="button button-primary" type="button" data-account-button>
+                <button class="button button-primary" type="submit" data-account-button>
                   Registrati
                 </button>
                 <p class="account-note" data-account-notice>
-                  Frontend pronto: qui collegheremo registrazione, ordini e profilo.
+                  Crea il tuo account con email e password.
                 </p>
               </form>
             </article>
@@ -138,5 +184,6 @@
 
     <script src="products.js"></script>
     <script src="script.js"></script>
+    <script type="module" src="firebase-auth.js"></script>
   </body>
 </html>
