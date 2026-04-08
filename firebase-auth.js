@@ -63,6 +63,30 @@ function isProfilePage() {
   return document.body?.dataset?.page === "profile";
 }
 
+function redirectToProfile() {
+  if (!isAccountPage()) {
+    return;
+  }
+
+  if (window.location.pathname.endsWith("/profile.html")) {
+    return;
+  }
+
+  window.location.replace("profile.html");
+}
+
+function redirectToAccountLogin() {
+  if (!isProfilePage()) {
+    return;
+  }
+
+  if (window.location.pathname.endsWith("/account.html") && window.location.hash === "#login") {
+    return;
+  }
+
+  window.location.replace("account.html#login");
+}
+
 function setNotice(element, message, status = "neutral") {
   if (!element) {
     return;
@@ -145,20 +169,18 @@ function renderProfileState(user) {
   const email = document.querySelector("[data-profile-email]");
   const form = document.querySelector("[data-profile-form]");
   const nameInput = document.querySelector("[data-profile-name]");
-  const guestCta = document.querySelector("[data-profile-guest]");
   const memberBlock = document.querySelector("[data-profile-member]");
   const logoutButton = document.querySelector("[data-profile-logout]");
 
-  if (!title || !copy || !email || !form || !nameInput || !guestCta || !memberBlock || !logoutButton) {
+  if (!title || !copy || !email || !form || !nameInput || !memberBlock || !logoutButton) {
     return;
   }
 
   if (!user) {
-    title.textContent = "Accedi per vedere il tuo profilo.";
+    title.textContent = "Caricamento profilo...";
     copy.textContent =
-      "La sessione Firebase viene letta qui automaticamente. Se non sei dentro, entra dalla pagina account.";
+      "Stiamo controllando la tua sessione prima di mostrarti il profilo Crimi Gang.";
     email.textContent = "Email: non disponibile";
-    guestCta.hidden = false;
     memberBlock.hidden = true;
     logoutButton.hidden = true;
     return;
@@ -170,7 +192,6 @@ function renderProfileState(user) {
     "Qui puoi cambiare il nome mostrato sul sito e uscire dal tuo account quando vuoi.";
   email.textContent = `Email: ${user.email || "non disponibile"}`;
   nameInput.value = user.displayName || "";
-  guestCta.hidden = true;
   memberBlock.hidden = false;
   logoutButton.hidden = false;
 }
@@ -240,19 +261,15 @@ function bindAccountForm(form) {
         }
 
         refreshSignedInUi(credentials.user);
-        setNotice(
-          notice,
-          "Registrazione completata. Il tuo account Crimi Gang e pronto.",
-          "success",
-        );
         form.reset();
+        redirectToProfile();
         return;
       }
 
       const credentials = await signInWithEmailAndPassword(auth, email, password);
       refreshSignedInUi(credentials.user);
-      setNotice(notice, "Accesso eseguito con successo.", "success");
       form.reset();
+      redirectToProfile();
     } catch (error) {
       setNotice(notice, authErrorMessage(error), "error");
     } finally {
@@ -325,6 +342,16 @@ async function initFirebaseAuth() {
   bindSharedLogoutButtons();
 
   onAuthStateChanged(auth, (user) => {
+    if (user && isAccountPage()) {
+      redirectToProfile();
+      return;
+    }
+
+    if (!user && isProfilePage()) {
+      redirectToAccountLogin();
+      return;
+    }
+
     refreshSignedInUi(user);
   });
 }
