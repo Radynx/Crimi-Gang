@@ -45,7 +45,7 @@
 .spotlight-copy h2,
 .drop-card h2,
 .detail-copy h1,
-.cart-page .section-heading h1,
+.cart-pane .section-heading h1,
 .cart-summary h2,
 .account-strip h2 {
   font-size: clamp(1.8rem, 3.3vw, 2.7rem);
@@ -150,10 +150,33 @@
   background: rgba(255, 122, 122, 0.1);
 }
 
+.account-inline-link {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  color: var(--sky);
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.account-inline-link:hover,
+.account-inline-link:focus-visible {
+  color: var(--brand);
+  transform: translateX(2px);
+}
+
 .account-form button:disabled,
+[data-forgot-password]:disabled,
 [data-auth-logout]:disabled,
 [data-auth-logout-global]:disabled,
 [data-profile-logout]:disabled,
+[data-profile-password]:disabled,
 [data-profile-button]:disabled {
   cursor: wait;
   opacity: 0.82;

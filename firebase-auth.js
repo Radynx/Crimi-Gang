@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
   signOut,
@@ -43,6 +44,7 @@ function authErrorMessage(error) {
     "auth/email-already-in-use": "Questa email e gia registrata.",
     "auth/invalid-credential": "Email o password non corretti.",
     "auth/invalid-email": "Inserisci un'email valida.",
+    "auth/missing-email": "Inserisci un'email prima di continuare.",
     "auth/missing-password": "Inserisci la password.",
     "auth/network-request-failed": "Connessione assente o instabile. Riprova tra poco.",
     "auth/operation-not-allowed":
@@ -278,6 +280,46 @@ function bindAccountForm(form) {
   });
 }
 
+function bindForgotPasswordButton() {
+  if (!isAccountPage()) {
+    return;
+  }
+
+  const button = document.querySelector("[data-forgot-password]");
+  const emailInput = document.querySelector("#login-email");
+  const notice = document.querySelector('#login [data-account-notice]');
+
+  if (!button || !emailInput || !notice) {
+    return;
+  }
+
+  button.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      setNotice(notice, "Inserisci prima la tua email per recuperare la password.", "error");
+      emailInput.focus();
+      return;
+    }
+
+    setButtonLoading(button, true, "Hai dimenticato la password?", "Invio...");
+    setNotice(notice, "Invio email di recupero in corso...", "neutral");
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setNotice(
+        notice,
+        "Ti abbiamo inviato l'email per cambiare la password. Controlla la posta.",
+        "success",
+      );
+    } catch (error) {
+      setNotice(notice, authErrorMessage(error), "error");
+    } finally {
+      setButtonLoading(button, false, "Hai dimenticato la password?", "Invio...");
+    }
+  });
+}
+
 function bindAccountForms() {
   if (!isAccountPage()) {
     return;
@@ -286,7 +328,7 @@ function bindAccountForms() {
   document.querySelectorAll("[data-account-form]").forEach(bindAccountForm);
 }
 
-function bindProfileForm() {
+function bindProfileControls() {
   if (!isProfilePage()) {
     return;
   }
@@ -295,8 +337,9 @@ function bindProfileForm() {
   const notice = document.querySelector("[data-profile-notice]");
   const input = document.querySelector("[data-profile-name]");
   const button = document.querySelector("[data-profile-button]");
+  const passwordButton = document.querySelector("[data-profile-password]");
 
-  if (!form || !notice || !input || !button) {
+  if (!form || !notice || !input || !button || !passwordButton) {
     return;
   }
 
@@ -328,6 +371,35 @@ function bindProfileForm() {
       setButtonLoading(button, false, "Salva nome", "Salvataggio...");
     }
   });
+
+  passwordButton.addEventListener("click", async () => {
+    const email = auth.currentUser?.email || "";
+
+    if (!auth.currentUser || !email) {
+      setNotice(
+        notice,
+        "Non riusciamo a leggere l'email del tuo account. Rientra e riprova.",
+        "error",
+      );
+      return;
+    }
+
+    setButtonLoading(passwordButton, true, "Cambia password", "Invio...");
+    setNotice(notice, "Invio email per cambio password in corso...", "neutral");
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setNotice(
+        notice,
+        "Email inviata. Apri la tua posta e segui il link per cambiare password.",
+        "success",
+      );
+    } catch (error) {
+      setNotice(notice, authErrorMessage(error), "error");
+    } finally {
+      setButtonLoading(passwordButton, false, "Cambia password", "Invio...");
+    }
+  });
 }
 
 async function initFirebaseAuth() {
@@ -338,7 +410,8 @@ async function initFirebaseAuth() {
   }
 
   bindAccountForms();
-  bindProfileForm();
+  bindForgotPasswordButton();
+  bindProfileControls();
   bindSharedLogoutButtons();
 
   onAuthStateChanged(auth, (user) => {
