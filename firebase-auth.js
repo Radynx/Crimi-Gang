@@ -44,6 +44,7 @@ function authErrorMessage(error) {
     "auth/email-already-in-use": "Questa email e gia registrata.",
     "auth/invalid-credential": "Email o password non corretti.",
     "auth/invalid-email": "Inserisci un'email valida.",
+    "auth/user-not-found": "Non risulta nessun account con questa email.",
     "auth/missing-email": "Inserisci un'email prima di continuare.",
     "auth/missing-password": "Inserisci la password.",
     "auth/network-request-failed": "Connessione assente o instabile. Riprova tra poco.",
@@ -63,6 +64,10 @@ function isAccountPage() {
 
 function isProfilePage() {
   return document.body?.dataset?.page === "profile";
+}
+
+function isForgotPasswordPage() {
+  return document.body?.dataset?.page === "forgot-password";
 }
 
 function redirectToProfile() {
@@ -198,10 +203,37 @@ function renderProfileState(user) {
   logoutButton.hidden = false;
 }
 
+function renderForgotPasswordState(user) {
+  if (!isForgotPasswordPage()) {
+    return;
+  }
+
+  const input = document.querySelector("[data-reset-email]");
+  const copy = document.querySelector("[data-reset-copy]");
+  const queryEmail = new URLSearchParams(window.location.search).get("email") || "";
+
+  if (!input || !copy) {
+    return;
+  }
+
+  if (queryEmail && !input.value.trim()) {
+    input.value = queryEmail;
+  }
+
+  if (user?.email && !input.value.trim()) {
+    input.value = user.email;
+    copy.textContent = `Ti prepariamo il reset per ${user.email}. Puoi anche cambiare email se vuoi recuperare un altro account.`;
+    return;
+  }
+
+  copy.textContent = "Usa la stessa email con cui hai creato il tuo account Crimi Gang.";
+}
+
 function refreshSignedInUi(user = auth.currentUser) {
   renderHeaderActions(user);
   renderAccountState(user);
   renderProfileState(user);
+  renderForgotPasswordState(user);
 }
 
 function bindSharedLogoutButtons() {
@@ -280,20 +312,23 @@ function bindAccountForm(form) {
   });
 }
 
-function bindForgotPasswordButton() {
-  if (!isAccountPage()) {
+function bindForgotPasswordForm() {
+  if (!isForgotPasswordPage()) {
     return;
   }
 
-  const button = document.querySelector("[data-forgot-password]");
-  const emailInput = document.querySelector("#login-email");
-  const notice = document.querySelector('#login [data-account-notice]');
+  const form = document.querySelector("[data-reset-form]");
+  const button = document.querySelector("[data-reset-button]");
+  const emailInput = document.querySelector("[data-reset-email]");
+  const notice = document.querySelector("[data-reset-notice]");
 
-  if (!button || !emailInput || !notice) {
+  if (!form || !button || !emailInput || !notice) {
     return;
   }
 
-  button.addEventListener("click", async () => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
     const email = emailInput.value.trim();
 
     if (!email) {
@@ -302,20 +337,20 @@ function bindForgotPasswordButton() {
       return;
     }
 
-    setButtonLoading(button, true, "Hai dimenticato la password?", "Invio...");
+    setButtonLoading(button, true, "Invia link di reset", "Invio...");
     setNotice(notice, "Invio email di recupero in corso...", "neutral");
 
     try {
       await sendPasswordResetEmail(auth, email);
       setNotice(
         notice,
-        "Ti abbiamo inviato l'email per cambiare la password. Controlla la posta.",
+        "Se esiste un account con questa email, ti arrivera una mail per reimpostare la password. Controlla anche Spam e Promozioni.",
         "success",
       );
     } catch (error) {
       setNotice(notice, authErrorMessage(error), "error");
     } finally {
-      setButtonLoading(button, false, "Hai dimenticato la password?", "Invio...");
+      setButtonLoading(button, false, "Invia link di reset", "Invio...");
     }
   });
 }
@@ -372,10 +407,9 @@ function bindProfileControls() {
     }
   });
 
-  passwordButton.addEventListener("click", async () => {
-    const email = auth.currentUser?.email || "";
-
-    if (!auth.currentUser || !email) {
+  passwordButton.addEventListener("click", (event) => {
+    if (!auth.currentUser?.email) {
+      event.preventDefault();
       setNotice(
         notice,
         "Non riusciamo a leggere l'email del tuo account. Rientra e riprova.",
@@ -384,21 +418,7 @@ function bindProfileControls() {
       return;
     }
 
-    setButtonLoading(passwordButton, true, "Cambia password", "Invio...");
-    setNotice(notice, "Invio email per cambio password in corso...", "neutral");
-
-    try {
-      await sendPasswordResetEmail(auth, email);
-      setNotice(
-        notice,
-        "Email inviata. Apri la tua posta e segui il link per cambiare password.",
-        "success",
-      );
-    } catch (error) {
-      setNotice(notice, authErrorMessage(error), "error");
-    } finally {
-      setButtonLoading(passwordButton, false, "Cambia password", "Invio...");
-    }
+    passwordButton.href = `forgot-password.html?email=${encodeURIComponent(auth.currentUser.email)}`;
   });
 }
 
@@ -409,8 +429,10 @@ async function initFirebaseAuth() {
     // Ignore and continue with Firebase default persistence.
   }
 
+  auth.languageCode = "it";
+
   bindAccountForms();
-  bindForgotPasswordButton();
+  bindForgotPasswordForm();
   bindProfileControls();
   bindSharedLogoutButtons();
 
