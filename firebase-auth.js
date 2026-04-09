@@ -4,6 +4,8 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  reload,
+  sendEmailVerification,
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
@@ -70,6 +72,10 @@ function isForgotPasswordPage() {
   return document.body?.dataset?.page === "forgot-password";
 }
 
+function isVerifyEmailPage() {
+  return document.body?.dataset?.page === "verify-email";
+}
+
 function redirectToProfile() {
   if (!isAccountPage()) {
     return;
@@ -92,6 +98,16 @@ function redirectToAccountLogin() {
   }
 
   window.location.replace("account.html#login");
+}
+
+function redirectToVerifyEmail(email = auth.currentUser?.email || "") {
+  const nextEmail = email ? `?email=${encodeURIComponent(email)}` : "";
+
+  if (window.location.pathname.endsWith("/verify-email.html")) {
+    return;
+  }
+
+  window.location.replace(`verify-email.html${nextEmail}`);
 }
 
 function setNotice(element, message, status = "neutral") {
@@ -164,6 +180,16 @@ function renderAccountState(user) {
   }
 
   const displayName = user.displayName || "Membro Crimi Gang";
+
+  if (!user.emailVerified) {
+    title.textContent = `Benvenuto ${displayName}, manca ancora la conferma email.`;
+    copy.textContent =
+      "Apri la mail di conferma che ti abbiamo inviato e poi continua con il tuo profilo Crimi Gang.";
+    logoutButton.hidden = false;
+    profileLink.hidden = true;
+    return;
+  }
+
   title.textContent = `Sei dentro come ${displayName}.`;
   copy.textContent = `Email collegata: ${user.email || "non disponibile"}. La sessione resta attiva su questo dispositivo anche mentre cambi pagina.`;
   logoutButton.hidden = false;
@@ -194,6 +220,17 @@ function renderProfileState(user) {
   }
 
   const displayName = user.displayName || "Membro Crimi Gang";
+
+  if (!user.emailVerified) {
+    title.textContent = `Conferma l'email di ${displayName}`;
+    copy.textContent =
+      "Prima di usare il profilo, conferma il tuo indirizzo email dalla mail che ti abbiamo inviato.";
+    email.textContent = `Email: ${user.email || "non disponibile"}`;
+    memberBlock.hidden = true;
+    logoutButton.hidden = false;
+    return;
+  }
+
   title.textContent = `Profilo di ${displayName}`;
   copy.textContent =
     "Qui puoi cambiare il nome mostrato sul sito e uscire dal tuo account quando vuoi.";
@@ -229,11 +266,37 @@ function renderForgotPasswordState(user) {
   copy.textContent = "Usa la stessa email con cui hai creato il tuo account Crimi Gang.";
 }
 
+function renderVerifyEmailState(user) {
+  if (!isVerifyEmailPage()) {
+    return;
+  }
+
+  const email = document.querySelector("[data-verify-email]");
+  const copy = document.querySelector("[data-verify-copy]");
+  const queryEmail = new URLSearchParams(window.location.search).get("email") || "";
+
+  if (!email || !copy) {
+    return;
+  }
+
+  const nextEmail = user?.email || queryEmail || "non disponibile";
+  email.textContent = `Email: ${nextEmail}`;
+
+  if (user?.emailVerified) {
+    copy.textContent = "Email confermata. Ora puoi entrare nel profilo Crimi Gang.";
+    return;
+  }
+
+  copy.textContent =
+    "Ti abbiamo inviato una mail di conferma. Aprila e clicca il link per attivare il profilo.";
+}
+
 function refreshSignedInUi(user = auth.currentUser) {
   renderHeaderActions(user);
   renderAccountState(user);
   renderProfileState(user);
   renderForgotPasswordState(user);
+  renderVerifyEmailState(user);
 }
 
 function bindSharedLogoutButtons() {
@@ -294,13 +357,24 @@ function bindAccountForm(form) {
           await updateProfile(credentials.user, { displayName: name });
         }
 
+        await sendEmailVerification(credentials.user);
+        await reload(credentials.user);
         refreshSignedInUi(credentials.user);
         form.reset();
-        redirectToProfile();
+        redirectToVerifyEmail(credentials.user.email || email);
         return;
       }
 
       const credentials = await signInWithEmailAndPassword(auth, email, password);
+      await reload(credentials.user);
+
+      if (!credentials.user.emailVerified) {
+        refreshSignedInUi(credentials.user);
+        form.reset();
+        redirectToVerifyEmail(credentials.user.email || email);
+        return;
+      }
+
       refreshSignedInUi(credentials.user);
       form.reset();
       redirectToProfile();
@@ -351,6 +425,83 @@ function bindForgotPasswordForm() {
       setNotice(notice, authErrorMessage(error), "error");
     } finally {
       setButtonLoading(button, false, "Invia link di reset", "Invio...");
+    }
+  });
+}
+
+function bindVerifyEmailControls() {
+  if (!isVerifyEmailPage()) {
+    return;
+  }
+
+  const refreshButton = document.querySelector("[data-verify-refresh]");
+  const resendButton = document.querySelector("[data-verify-resend]");
+  const notice = document.querySelector("[data-verify-notice]");
+  const queryEmail = new URLSearchParams(window.location.search).get("email") || "";
+
+  if (!refreshButton || !resendButton || !notice) {
+    return;
+  }
+
+  refreshButton.addEventListener("click", async () => {
+    if (!auth.currentUser) {
+      setNotice(
+        notice,
+        "Rientra con il tuo account e poi torna qui per controllare la conferma email.",
+        "error",
+      );
+      return;
+    }
+
+    setButtonLoading(refreshButton, true, "Ho confermato, continua", "Controllo...");
+    setNotice(notice, "Controllo conferma email in corso...", "neutral");
+
+    try {
+      await reload(auth.currentUser);
+
+      if (auth.currentUser.emailVerified) {
+        setNotice(notice, "Email confermata. Ti portiamo nel profilo.", "success");
+        refreshSignedInUi(auth.currentUser);
+        window.location.replace("profile.html");
+        return;
+      }
+
+      setNotice(
+        notice,
+        "Non risulta ancora confermata. Apri la mail ricevuta e clicca il link, poi riprova.",
+        "error",
+      );
+    } catch (error) {
+      setNotice(notice, authErrorMessage(error), "error");
+    } finally {
+      setButtonLoading(refreshButton, false, "Ho confermato, continua", "Controllo...");
+    }
+  });
+
+  resendButton.addEventListener("click", async () => {
+    if (!auth.currentUser) {
+      setNotice(
+        notice,
+        `Accedi prima con ${queryEmail || "la tua email"} per poter inviare di nuovo la mail di conferma.`,
+        "error",
+      );
+      return;
+    }
+
+    setButtonLoading(resendButton, true, "Invia di nuovo la mail", "Invio...");
+    setNotice(notice, "Invio della mail di conferma in corso...", "neutral");
+
+    try {
+      await sendEmailVerification(auth.currentUser);
+      setNotice(
+        notice,
+        "Mail di conferma inviata di nuovo. Controlla Posta in arrivo, Spam e Promozioni.",
+        "success",
+      );
+    } catch (error) {
+      setNotice(notice, authErrorMessage(error), "error");
+    } finally {
+      setButtonLoading(resendButton, false, "Invia di nuovo la mail", "Invio...");
     }
   });
 }
@@ -433,11 +584,35 @@ async function initFirebaseAuth() {
 
   bindAccountForms();
   bindForgotPasswordForm();
+  bindVerifyEmailControls();
   bindProfileControls();
   bindSharedLogoutButtons();
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      try {
+        await reload(user);
+      } catch {
+        // Ignore transient reload issues and use cached user state.
+      }
+    }
+
+    if (user && !user.emailVerified && isProfilePage()) {
+      redirectToVerifyEmail(user.email || "");
+      return;
+    }
+
+    if (user && user.emailVerified && isVerifyEmailPage()) {
+      window.location.replace("profile.html");
+      return;
+    }
+
     if (user && isAccountPage()) {
+      if (!user.emailVerified) {
+        redirectToVerifyEmail(user.email || "");
+        return;
+      }
+
       redirectToProfile();
       return;
     }

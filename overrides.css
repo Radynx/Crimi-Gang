@@ -176,7 +176,20 @@
   justify-content: center;
 }
 
+.verify-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.verify-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .account-form button:disabled,
+[data-verify-refresh]:disabled,
+[data-verify-resend]:disabled,
 [data-reset-button]:disabled,
 [data-forgot-password]:disabled,
 [data-auth-logout]:disabled,
